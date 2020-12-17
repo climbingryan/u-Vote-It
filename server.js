@@ -51,12 +51,21 @@ app.get('/api/candidate/:id', (req, res) => {
 });
 
     // DELETE a candidate
-// db.run(`DELETE FROM candidates WHERE id = ?`, 1, function(err, result) {
-//     if (err) {
-//         console.log(err)
-//     }
-//     console.log(result, this, this.changes);
-// });
+app.delete('/api/candidate/:id', (req, res) => {
+    const sql = `DELETE FROM candidates WHERE id = ?`;
+    const params = [req.params.id];
+
+    db.run(sql, params, function(err, result) {
+        if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+        }
+        res.json({
+            message: 'successfully deleted',
+            changes: this.changes
+        });
+    });
+});
 
     // Create a candidate
 // const sql = `INSERT INTO candidates (id, first_name, last_name, industry_connected)
