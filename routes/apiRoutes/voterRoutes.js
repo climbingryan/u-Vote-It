@@ -84,5 +84,21 @@ router.put('/voter/:id', (req, res) => {
         });
     });
 });
+    // Remove voter from db
+router.delete('/voter/:id', (req, res) => {
+    const sql = `DELETE FROM voters WHERE id = ?`;
+    // const params = req.params.id => if only one param => skip params var & put into db.run call (because of memory allocation)
+
+    db.run(sql, req.params.id, function(err, row) {
+        if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+        }
+        res.json({
+            message: 'deleted',
+            changes: this.changes
+        });
+    });
+});
 
 module.exports = router;
